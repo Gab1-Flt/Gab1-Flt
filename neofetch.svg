@@ -143,10 +143,10 @@
   <g class="l5"><line x1="416" y1="190" x2="852" y2="190" stroke="#21262d" stroke-width="1" stroke-dasharray="4 4"/></g>
   <g class="l6"><text x="416" y="208" class="mono" font-size="13"><tspan fill="#d2a8ff" font-weight="600">Languages:</tspan></text><text x="540" y="208" class="mono" font-size="13" fill="#e6edf3">Python, TypeScript, C, Java, JS</text></g>
   <g class="l7"><text x="416" y="230" class="mono" font-size="13"><tspan fill="#d2a8ff" font-weight="600">Web &amp; Data:</tspan></text><text x="540" y="230" class="mono" font-size="13" fill="#e6edf3">SQL, PHP, HTML5, CSS3</text></g>
-  <g class="l8"><text x="416" y="252" class="mono" font-size="13"><tspan fill="#a5d6ff" font-weight="600">Frameworks:</tspan></text><text x="540" y="252" class="mono" font-size="13" fill="#e6edf3">React, Node.js, Tailwind CSS</text></g>
+  <g class="l8"><text x="416" y="252" class="mono" font-size="13"><tspan fill="#a5d6ff" font-weight="600">Frameworks:</tspan></text><text x="540" y="252" class="mono" font-size="13" fill="#e6edf3">React, Tailwind CSS</text></g>
   <g class="l9"><text x="416" y="274" class="mono" font-size="13"><tspan fill="#7ee787" font-weight="600">Hardware/IoT:</tspan></text><text x="540" y="274" class="mono" font-size="13" fill="#e6edf3">ESP32, LoRaWAN, FPGA</text></g>
   <g class="l10"><text x="416" y="296" class="mono" font-size="13"><tspan fill="#7ee787" font-weight="600">Boards:</tspan></text><text x="540" y="296" class="mono" font-size="13" fill="#e6edf3">Arduino, Raspberry Pi</text></g>
-  <g class="l11"><text x="416" y="318" class="mono" font-size="13"><tspan fill="#ffa657" font-weight="600">Tools:</tspan></text><text x="540" y="318" class="mono" font-size="13" fill="#e6edf3">Git, Linux, Shell</text></g>
+  <g class="l11"><text x="416" y="318" class="mono" font-size="13"><tspan fill="#ffa657" font-weight="600">Tools:</tspan></text><text x="540" y="318" class="mono" font-size="13" fill="#e6edf3">Git, GitHub, Linux, Shell</text></g>
   <g class="l12"><line x1="416" y1="332" x2="852" y2="332" stroke="#21262d" stroke-width="1" stroke-dasharray="4 4"/></g>
   <g class="l13"><text x="416" y="350" class="mono" font-size="13"><tspan fill="#58a6ff" font-weight="600">LinkedIn:</tspan></text><text x="540" y="350" class="mono" font-size="13" fill="#e6edf3">linkedin.com/in/gabin-flotat</text></g>
   <g class="l14"><text x="416" y="372" class="mono" font-size="13"><tspan fill="#58a6ff" font-weight="600">GitHub:</tspan></text><text x="540" y="372" class="mono" font-size="13" fill="#e6edf3">github.com/Gab1-Flt</text></g>

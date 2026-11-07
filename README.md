@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="./neofetch.svg?v=4" width="100%" alt="Neofetch ASCII Portrait & Profile Info" />
+  <img src="./neofetch.svg?v=5" width="100%" alt="Neofetch ASCII Portrait & Profile Info" />
 </p>
 
 <p align="center">
