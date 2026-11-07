@@ -27,7 +27,7 @@ ROWS = [
     ("SEP", "", ""),
     ("Languages", "Python, TypeScript, C, Java, JS", "#d2a8ff"),
     ("Web & Data", "SQL, PHP, HTML5, CSS3", "#d2a8ff"),
-    ("Frameworks", "React, Tailwind CSS", "#a5d6ff"),
+    ("Frameworks", "React, Node.js, Tailwind CSS", "#a5d6ff"),
     ("Hardware/IoT", "ESP32, LoRaWAN, FPGA", "#7ee787"),
     ("Boards", "Arduino, Raspberry Pi", "#7ee787"),
     ("Tools", "Git, Linux, Shell", "#ffa657"),
