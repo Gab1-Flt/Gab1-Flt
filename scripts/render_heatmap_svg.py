@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Render an animated terminal-styled GitHub contribution heatmap SVG (contrib-heatmap.svg)
-from data/contributions.json.
+from data/contributions.json, including 3 stat boxes below the heatmap inside the same console window.
 """
 
 import datetime as dt
@@ -52,8 +52,6 @@ def render_heatmap_svg(data: dict) -> str:
     user = data.get("user", "Gab1-Flt")
     total = data.get("total_contributions", 0)
     days = data.get("days", [])
-    updated_raw = data.get("updated_at", "")
-    updated_date = updated_raw[:10] if updated_raw else dt.date.today().isoformat()
 
     # Organize days into weekly columns (Sunday = row 0 .. Saturday = row 6)
     weeks: list[list[dict | None]] = []
@@ -81,12 +79,12 @@ def render_heatmap_svg(data: dict) -> str:
     longest_streak, current_streak = compute_streaks(days)
 
     width = 880
-    height = 248
+    height = 304
     cell_size = 11
     cell_gap = 3
     step = cell_size + cell_gap
     grid_x0 = 56
-    grid_y0 = 102
+    grid_y0 = 100
 
     # Month labels along top of columns
     month_labels = []
@@ -113,9 +111,9 @@ def render_heatmap_svg(data: dict) -> str:
     col_groups = []
     css_cols = []
     for w_idx, week in enumerate(weeks):
-        delay = 0.15 + w_idx * 0.018
+        delay = 0.12 + w_idx * 0.016
         css_cols.append(
-            f".c{w_idx} {{ opacity: 0; animation: fadeCell 0.35s ease forwards {delay:.3f}s; }}"
+            f".c{w_idx} {{ opacity: 0; animation: fadeCell 0.32s ease forwards {delay:.3f}s; }}"
         )
         rects = []
         x = grid_x0 + w_idx * step
@@ -125,17 +123,16 @@ def render_heatmap_svg(data: dict) -> str:
             y = grid_y0 + dow * step
             lvl = cell["level"]
             fill = LEVEL_COLORS.get(lvl, LEVEL_COLORS[0])
-            stroke = "#21262d" if lvl == 0 else "none"
-            sw = ' stroke="#21262d" stroke-width="0.8"' if stroke != "none" else ""
+            sw = ' stroke="#21262d" stroke-width="0.8"' if lvl == 0 else ""
             rects.append(
                 f'<rect x="{x}" y="{y}" width="{cell_size}" height="{cell_size}" rx="2.5" fill="{fill}"{sw}>'
                 f"<title>{cell['date']} (level {lvl})</title></rect>"
             )
         col_groups.append(f'  <g class="c{w_idx}">' + "".join(rects) + "</g>")
 
-    # Legend on bottom right
-    legend_y = grid_y0 + 7 * step + 18
-    legend_x = width - 175
+    # Legend on top right (aligned with the command prompt)
+    legend_y = 51
+    legend_x = width - 165
     legend_items = [
         f'<text x="{legend_x - 32}" y="{legend_y + 9}" class="mono" font-size="10" fill="#8b949e">Less</text>'
     ]
@@ -150,11 +147,43 @@ def render_heatmap_svg(data: dict) -> str:
         f'<text x="{legend_x + 5 * (cell_size + 3) + 4}" y="{legend_y + 9}" class="mono" font-size="10" fill="#8b949e">More</text>'
     )
 
+    # 3 Stat Boxes below the heatmap inside the same terminal window
+    # Total width from x=24 to x=856 is 832px -> 3 boxes of 264px with 20px gap
+    box_y = 212
+    box_h = 68
+    box_w = 264
+    box_gap = 20
+
+    longest_unit = "day" if longest_streak == 1 else "days"
+    current_unit = "day" if current_streak == 1 else "days"
+
+    stat_boxes_data = [
+        ("TOTAL CONTRIBUTIONS (LAST YR)", f"{total}", "#39d353", 0.55),
+        ("LONGEST STREAK", f"{longest_streak} {longest_unit}", "#79c0ff", 0.68),
+        ("CURRENT STREAK", f"{current_streak} {current_unit}", "#7ee787", 0.81),
+    ]
+
+    stat_boxes_svg = []
+    for idx, (label, val_str, accent_color, delay) in enumerate(stat_boxes_data):
+        bx = 24 + idx * (box_w + box_gap)
+        cx = bx + box_w // 2
+        css_cols.append(
+            f".stat{idx} {{ opacity: 0; animation: fadeBox 0.38s ease forwards {delay:.2f}s; }}"
+        )
+        stat_boxes_svg.append(
+            f'  <g class="stat{idx}">\n'
+            f'    <rect x="{bx}" y="{box_y}" width="{box_w}" height="{box_h}" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>\n'
+            f'    <text x="{cx}" y="{box_y + 24}" text-anchor="middle" class="mono" font-size="10.5" fill="#8b949e" font-weight="600">{html.escape(label)}</text>\n'
+            f'    <text x="{cx}" y="{box_y + 52}" text-anchor="middle" class="mono" font-size="21" fill="{accent_color}" font-weight="700">{html.escape(val_str)}</text>\n'
+            f"  </g>"
+        )
+
     css_joined = "\n      ".join(css_cols)
     months_joined = "\n  ".join(month_labels)
     dows_joined = "\n  ".join(dow_labels)
     cols_joined = "\n".join(col_groups)
     legend_joined = "\n  ".join(legend_items)
+    stats_joined = "\n".join(stat_boxes_svg)
 
     svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="100%" height="100%">
   <defs>
@@ -165,6 +194,10 @@ def render_heatmap_svg(data: dict) -> str:
       @keyframes fadeCell {{
         0% {{ opacity: 0; transform: scale(0.75); transform-box: fill-box; transform-origin: center; }}
         100% {{ opacity: 1; transform: scale(1); transform-box: fill-box; transform-origin: center; }}
+      }}
+      @keyframes fadeBox {{
+        0% {{ opacity: 0; transform: translateY(5px); }}
+        100% {{ opacity: 1; transform: translateY(0); }}
       }}
       {css_joined}
     </style>
@@ -181,15 +214,13 @@ def render_heatmap_svg(data: dict) -> str:
   <circle cx="22" cy="18.5" r="5.5" fill="#ff5f56"/>
   <circle cx="40" cy="18.5" r="5.5" fill="#ffbd2e"/>
   <circle cx="58" cy="18.5" r="5.5" fill="#27c93f"/>
-  <text x="{width // 2}" y="23" text-anchor="middle" class="mono" font-size="11.5" fill="#8b949e">gabin@github: ~/contributions (auto-refreshed daily)</text>
+  <text x="{width // 2}" y="23" text-anchor="middle" class="mono" font-size="11.5" fill="#8b949e">gabin@github: ~/contributions (zsh)</text>
 
-  <!-- Shell Command Prompt & Summary Stats -->
-  <text x="24" y="62" class="mono" font-size="12.5">
-    <tspan fill="#7ee787">gabin@github</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff">~</tspan><tspan fill="#8b949e">$ </tspan><tspan fill="#e6edf3">./contributions.sh --user {html.escape(user)} --heatmap</tspan>
+  <!-- Shell Command Prompt & Top-Right Legend -->
+  <text x="24" y="60" class="mono" font-size="12.5">
+    <tspan fill="#7ee787" font-weight="600">gabin@github</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff" font-weight="600">~</tspan><tspan fill="#8b949e">$ </tspan><tspan fill="#e6edf3">./contributions.sh --user {html.escape(user)} --heatmap</tspan>
   </text>
-  <text x="{width - 24}" y="62" text-anchor="end" class="mono" font-size="12">
-    <tspan fill="#39d353" font-weight="700">{total}</tspan><tspan fill="#8b949e"> contributions (last yr)  •  Longest streak: </tspan><tspan fill="#79c0ff" font-weight="600">{longest_streak}d</tspan><tspan fill="#8b949e">  •  Current: </tspan><tspan fill="#7ee787" font-weight="600">{current_streak}d</tspan>
-  </text>
+  {legend_joined}
 
   <!-- Month & Day Labels -->
   {months_joined}
@@ -198,11 +229,8 @@ def render_heatmap_svg(data: dict) -> str:
   <!-- Animated 53-Week Heatmap Grid -->
 {cols_joined}
 
-  <!-- Footer Status & Legend -->
-  <text x="56" y="{legend_y + 9}" class="mono" font-size="10.5" fill="#484f58">
-    [cron: daily auto-update via GitHub Actions • synced {html.escape(updated_date)}]
-  </text>
-  {legend_joined}
+  <!-- 3 Stat Boxes Inside Console Window Below Heatmap -->
+{stats_joined}
 </svg>
 """
     return svg
@@ -220,4 +248,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
