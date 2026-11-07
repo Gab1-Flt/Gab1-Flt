@@ -4,7 +4,6 @@ Generate the unified full-width terminal SVGs (880px wide, #0d1117 background):
 1. whoami.svg   — Left-aligned 'whoami' terminal command box
 2. neofetch.svg — Unified full-width box combining the animated ASCII portrait on the left
                   and the Neofetch system/profile card on the right
-3. stack.svg    — Left-aligned './stack.sh --list' tree box with pixel-aligned colons
 """
 
 import html
@@ -15,7 +14,6 @@ from make_ascii_svg import INPUT_PATH, image_to_ascii_grid
 ROOT = Path(__file__).resolve().parent.parent
 WHOAMI_PATH = ROOT / "whoami.svg"
 NEOFETCH_PATH = ROOT / "neofetch.svg"
-STACK_PATH = ROOT / "stack.svg"
 
 HOST_USER = "gabin"
 HOST_DOMAIN = "github"
@@ -37,13 +35,6 @@ ROWS = [
     ("LinkedIn", "linkedin.com/in/gabin-flotat", "#58a6ff"),
     ("GitHub", "github.com/Gab1-Flt", "#58a6ff"),
     ("Status", "Building cool things • Open to connect", "#3fb950"),
-]
-
-STACK_ROWS = [
-    ("├──", "Languages", "Python, TypeScript, C, Java, JavaScript, SQL, PHP, HTML, CSS", "#d2a8ff"),
-    ("├──", "Frameworks", "React, Tailwind CSS", "#a5d6ff"),
-    ("├──", "Hardware/IoT", "ESP32, LoRaWAN, FPGA, Arduino, Raspberry Pi", "#7ee787"),
-    ("└──", "Tools", "Git, Linux, Shell", "#ffa657"),
 ]
 
 
@@ -102,21 +93,12 @@ def make_unified_neofetch_svg(ascii_lines: list[str], static: bool = False) -> s
 
     for r_idx, line in enumerate(ascii_lines):
         y = ascii_y0 + r_idx * row_height
-        delay = 0.12 + r_idx * 0.030
-        if not static:
-            css_rules.append(
-                f".r{r_idx} {{ opacity: 0; animation: typeRow 0.16s steps(1) forwards {delay:.3f}s; }}"
-            )
-            cls_attr = f' class="mono r{r_idx}"'
-        else:
-            cls_attr = ' class="mono"'
-
         if line.strip() == "":
             continue
 
         escaped = html.escape(line).replace(" ", "&#160;")
         svg_ascii_rows.append(
-            f'  <text x="{ascii_x}" y="{y:.1f}"{cls_attr} font-size="{font_size}" '
+            f'    <text x="{ascii_x}" y="{y:.1f}" class="mono" font-size="{font_size}" '
             f'fill="#c9d1d9" textLength="{target_text_width}" lengthAdjust="spacing">{escaped}</text>'
         )
 
@@ -243,15 +225,6 @@ def make_unified_neofetch_svg(ascii_lines: list[str], static: bool = False) -> s
       .bold {{
         font-weight: 700;
       }}
-      @keyframes typeRow {{
-        0% {{ opacity: 0; }}
-        100% {{ opacity: 1; }}
-      }}
-      @keyframes scanline {{
-        0% {{ transform: translateY(0px); opacity: 0.85; }}
-        92% {{ transform: translateY({rows * row_height:.1f}px); opacity: 0.85; }}
-        100% {{ transform: translateY({rows * row_height:.1f}px); opacity: 0; }}
-      }}
       @keyframes fadeSlide {{
         0% {{ opacity: 0; transform: translateY(4px); }}
         100% {{ opacity: 1; transform: translateY(0); }}
@@ -260,14 +233,18 @@ def make_unified_neofetch_svg(ascii_lines: list[str], static: bool = False) -> s
         0%, 49% {{ opacity: 1; }}
         50%, 100% {{ opacity: 0; }}
       }}
-      .scan {{
-        animation: scanline {0.12 + rows * 0.030 + 0.15:.2f}s linear forwards;
-      }}
       .cursor {{
         animation: blink 1.1s steps(1) infinite;
       }}
       {css_joined}
     </style>
+
+    <!-- Synchronized top-to-bottom clip reveal for the entire ASCII portrait (y=78..472) -->
+    <clipPath id="asciiReveal">
+      <rect x="0" y="78" width="392" height="396">
+        <animate attributeName="height" from="0" to="396" begin="0s" dur="2.1s" calcMode="linear" fill="freeze"/>
+      </rect>
+    </clipPath>
   </defs>
 
   <!-- Unified Full-Width Terminal Window -->
@@ -293,71 +270,19 @@ def make_unified_neofetch_svg(ascii_lines: list[str], static: bool = False) -> s
   <!-- Subtle Vertical Divider Between ASCII Portrait and Neofetch Info -->
   <line x1="394" y1="76" x2="394" y2="{height - 20}" stroke="#21262d" stroke-width="1"/>
 
-  <!-- Scanline Bar on Left Portrait -->
-  <rect x="{ascii_x}" y="{ascii_y0 - 6}" width="{target_text_width}" height="2" fill="#58a6ff" class="scan"/>
-
-  <!-- Left Pane: Animated Monochrome ASCII Portrait -->
+  <!-- Left Pane: Animated Monochrome ASCII Portrait (100% full height reveal via clipPath) -->
+  <g clip-path="url(#asciiReveal)">
 {ascii_joined}
+  </g>
+
+  <!-- Scanline Bar locked to the bottom edge of the clip reveal (y=78 -> 474) -->
+  <rect x="{ascii_x}" y="78" width="{target_text_width}" height="2" fill="#58a6ff" opacity="0">
+    <animate attributeName="y" from="78" to="474" begin="0s" dur="2.1s" calcMode="linear" fill="freeze"/>
+    <animate attributeName="opacity" values="0.9;0.9;0" keyTimes="0;0.94;1" begin="0s" dur="2.15s" fill="freeze"/>
+  </rect>
 
   <!-- Right Pane: Animated Neofetch Info Rows -->
 {info_joined}
-</svg>
-"""
-
-
-def make_stack_svg() -> str:
-    width = 880
-    height = 148
-
-    rows_svg = []
-    css_rules = []
-    y = 62
-    for idx, (branch, category, items, color) in enumerate(STACK_ROWS):
-        delay = 0.12 + idx * 0.08
-        css_rules.append(
-            f".s{idx} {{ opacity: 0; animation: fadeIn 0.3s ease forwards {delay:.2f}s; }}"
-        )
-        rows_svg.append(
-            f'  <g class="s{idx}">'
-            f'<text x="24" y="{y}" class="mono" font-size="13">'
-            f'<tspan fill="#484f58">{html.escape(branch)} </tspan>'
-            f'<tspan fill="{color}" font-weight="600">{html.escape(category)}</tspan>'
-            f"</text>"
-            f'<text x="176" y="{y}" class="mono" font-size="13">'
-            f'<tspan fill="#58a6ff" font-weight="600">: </tspan>'
-            f'<tspan fill="#e6edf3">{html.escape(items)}</tspan>'
-            f"</text>"
-            f"</g>"
-        )
-        y += 23
-
-    css_joined = "\n      ".join(css_rules)
-    rows_joined = "\n".join(rows_svg)
-
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="100%" height="100%">
-  <defs>
-    <style>
-      .mono {{
-        font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-      }}
-      @keyframes fadeIn {{
-        0% {{ opacity: 0; transform: translateY(3px); }}
-        100% {{ opacity: 1; transform: translateY(0); }}
-      }}
-      {css_joined}
-    </style>
-  </defs>
-
-  <!-- Pitch-dark GitHub-matching Terminal Box -->
-  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="10" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
-
-  <!-- Command Prompt -->
-  <text x="24" y="34" class="mono" font-size="13.5">
-    <tspan fill="#7ee787" font-weight="600">gabin@github</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff" font-weight="600">~</tspan><tspan fill="#8b949e">$ </tspan><tspan fill="#e6edf3">./stack.sh --list</tspan>
-  </text>
-
-  <!-- Left-aligned Tree Rows with Aligned Colons -->
-{rows_joined}
 </svg>
 """
 

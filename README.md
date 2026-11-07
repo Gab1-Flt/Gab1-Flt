@@ -1,15 +1,15 @@
 <div align="center">
 
 <p align="center">
-  <img src="./whoami.svg" width="100%" alt="whoami — Gabin Flotat" />
+  <img src="./whoami.svg?v=3" width="100%" alt="whoami — Gabin Flotat" />
 </p>
 
 <p align="center">
-  <img src="./neofetch.svg" width="100%" alt="Neofetch ASCII Portrait & Profile Info" />
+  <img src="./neofetch.svg?v=3" width="100%" alt="Neofetch ASCII Portrait & Profile Info" />
 </p>
 
 <p align="center">
-  <img src="./contrib-heatmap.svg" width="100%" alt="Live Contribution Heatmap" />
+  <img src="./contrib-heatmap.svg?v=3" width="100%" alt="Live Contribution Heatmap" />
 </p>
 
 <p align="center">
