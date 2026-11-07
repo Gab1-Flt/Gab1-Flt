@@ -1,0 +1,7 @@
+# Local photo sources & previews (only the generated SVG is needed on GitHub)
+source-photo*.jpg
+source-prepped*.png
+test-cutout*.png
+ascii-preview*.png
+__pycache__/
+*.pyc
