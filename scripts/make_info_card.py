@@ -374,10 +374,6 @@ def main():
     NEOFETCH_PATH.write_text(neofetch_svg, encoding="utf-8")
     print(f"Generated {NEOFETCH_PATH} ({len(neofetch_svg)} bytes)")
 
-    stack_svg = make_stack_svg()
-    STACK_PATH.write_text(stack_svg, encoding="utf-8")
-    print(f"Generated {STACK_PATH} ({len(stack_svg)} bytes)")
-
 
 if __name__ == "__main__":
     main()

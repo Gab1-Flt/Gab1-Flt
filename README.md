@@ -13,10 +13,6 @@
 </p>
 
 <p align="center">
-  <img src="./stack.svg" width="100%" alt="Tech Stack List" />
-</p>
-
-<p align="center">
   <a href="https://www.linkedin.com/in/gabin-flotat/" target="_blank">
     <img src="https://img.shields.io/badge/LinkedIn-Gabin_Flotat-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
