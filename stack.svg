@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 148" width="100%" height="100%">
+  <defs>
+    <style>
+      .mono {
+        font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(3px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .s0 { opacity: 0; animation: fadeIn 0.3s ease forwards 0.12s; }
+      .s1 { opacity: 0; animation: fadeIn 0.3s ease forwards 0.20s; }
+      .s2 { opacity: 0; animation: fadeIn 0.3s ease forwards 0.28s; }
+      .s3 { opacity: 0; animation: fadeIn 0.3s ease forwards 0.36s; }
+    </style>
+  </defs>
+
+  <!-- Pitch-dark GitHub-matching Terminal Box -->
+  <rect x="1" y="1" width="878" height="146" rx="10" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+
+  <!-- Command Prompt -->
+  <text x="24" y="34" class="mono" font-size="13.5">
+    <tspan fill="#7ee787" font-weight="600">gabin@github</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff" font-weight="600">~</tspan><tspan fill="#8b949e">$ </tspan><tspan fill="#e6edf3">./stack.sh --list</tspan>
+  </text>
+
+  <!-- Left-aligned Tree Rows with Aligned Colons -->
+  <g class="s0"><text x="24" y="62" class="mono" font-size="13"><tspan fill="#484f58">├── </tspan><tspan fill="#d2a8ff" font-weight="600">Languages</tspan></text><text x="176" y="62" class="mono" font-size="13"><tspan fill="#58a6ff" font-weight="600">: </tspan><tspan fill="#e6edf3">Python, TypeScript, C, Java, JavaScript, SQL, PHP, HTML, CSS</tspan></text></g>
+  <g class="s1"><text x="24" y="85" class="mono" font-size="13"><tspan fill="#484f58">├── </tspan><tspan fill="#a5d6ff" font-weight="600">Frameworks</tspan></text><text x="176" y="85" class="mono" font-size="13"><tspan fill="#58a6ff" font-weight="600">: </tspan><tspan fill="#e6edf3">React, Tailwind CSS</tspan></text></g>
+  <g class="s2"><text x="24" y="108" class="mono" font-size="13"><tspan fill="#484f58">├── </tspan><tspan fill="#7ee787" font-weight="600">Hardware/IoT</tspan></text><text x="176" y="108" class="mono" font-size="13"><tspan fill="#58a6ff" font-weight="600">: </tspan><tspan fill="#e6edf3">ESP32, LoRaWAN, FPGA, Arduino, Raspberry Pi</tspan></text></g>
+  <g class="s3"><text x="24" y="131" class="mono" font-size="13"><tspan fill="#484f58">└── </tspan><tspan fill="#ffa657" font-weight="600">Tools</tspan></text><text x="176" y="131" class="mono" font-size="13"><tspan fill="#58a6ff" font-weight="600">: </tspan><tspan fill="#e6edf3">Git, Linux, Shell</tspan></text></g>
+</svg>

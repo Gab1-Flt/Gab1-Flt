@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 80" width="100%" height="100%">
+  <defs>
+    <style>
+      .mono {
+        font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(3px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .line1 { opacity: 0; animation: fadeIn 0.3s ease forwards 0.05s; }
+      .line2 { opacity: 0; animation: fadeIn 0.35s ease forwards 0.22s; }
+    </style>
+  </defs>
+
+  <!-- Pitch-dark GitHub-matching Terminal Box -->
+  <rect x="1" y="1" width="878" height="78" rx="10" fill="#0d1117" stroke="#30363d" stroke-width="1.5"/>
+
+  <!-- Line 1: Left-aligned terminal prompt -->
+  <g class="line1">
+    <text x="24" y="33" class="mono" font-size="13.5">
+      <tspan fill="#7ee787" font-weight="600">gabin@github</tspan><tspan fill="#8b949e">:</tspan><tspan fill="#58a6ff" font-weight="600">~</tspan><tspan fill="#8b949e">$ </tspan><tspan fill="#e6edf3">whoami</tspan>
+    </text>
+  </g>
+
+  <!-- Line 2: Left-aligned whoami output -->
+  <g class="line2">
+    <text x="24" y="58" class="mono" font-size="13.5">
+      <tspan fill="#58a6ff" font-weight="700">&gt; </tspan><tspan fill="#e6edf3" font-weight="700">Gabin Flotat</tspan><tspan fill="#8b949e"> — </tspan><tspan fill="#c9d1d9">Engineering Student</tspan><tspan fill="#58a6ff"> • </tspan><tspan fill="#c9d1d9">Full-Stack &amp; Systems Developer</tspan><tspan fill="#58a6ff"> • </tspan><tspan fill="#c9d1d9">AI &amp; Cybersecurity Enthusiast</tspan>
+    </text>
+  </g>
+</svg>
