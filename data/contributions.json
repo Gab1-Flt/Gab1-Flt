@@ -1,36 +1,8 @@
 {
   "user": "Gab1-Flt",
-  "updated_at": "2026-11-07T13:03:42Z",
-  "total_contributions": 105,
+  "updated_at": "2026-11-08T13:26:17Z",
+  "total_contributions": 107,
   "days": [
-    {
-      "date": "2025-11-02",
-      "level": 0
-    },
-    {
-      "date": "2025-11-03",
-      "level": 0
-    },
-    {
-      "date": "2025-11-04",
-      "level": 0
-    },
-    {
-      "date": "2025-11-05",
-      "level": 0
-    },
-    {
-      "date": "2025-11-06",
-      "level": 0
-    },
-    {
-      "date": "2025-11-07",
-      "level": 0
-    },
-    {
-      "date": "2025-11-08",
-      "level": 0
-    },
     {
       "date": "2025-11-09",
       "level": 0
@@ -1485,7 +1457,11 @@
     },
     {
       "date": "2026-11-07",
-      "level": 3
+      "level": 4
+    },
+    {
+      "date": "2026-11-08",
+      "level": 1
     }
   ]
 }
